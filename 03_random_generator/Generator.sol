@@ -3,7 +3,7 @@ pragma solidity ^0.4.24;
 /**
 * @title Pseudo Random Generator
 * @author Jan Foryś
-* @notice Will generate "random" number
+* @notice Will generate "random" number.
 */
 
 contract Generator {
