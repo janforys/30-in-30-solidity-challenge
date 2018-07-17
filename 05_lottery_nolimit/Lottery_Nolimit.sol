@@ -3,10 +3,10 @@ pragma solidity ^0.4.24;
 /**
 * @title Lottery NoLimit
 * @author Jan Foryś
-* @notice A Lottery for no participants limit.
+* @notice A Lottery with no participants limit.
 */
 
-contract Lottery_Nolimit {
+contract LotteryNolimit {
 
     address[] participants;   // no participants limit
     address owner;
