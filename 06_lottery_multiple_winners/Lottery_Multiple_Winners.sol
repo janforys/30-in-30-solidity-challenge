@@ -13,6 +13,12 @@ contract MultipleWinners {
     address owner;
     uint Nonce;
 
+    enum LotteryState { Accepting, Finished }
+    LotteryState state;
+
+    mapping (address => bool) gotReward;
+    mapping (uint => address[]) choices;
+
     // Function modifier that allows only contract's owner to call certain functions
     modifier onlyOwner() {
         require(msg.sender == owner, "Only owner can do this.");
@@ -21,6 +27,7 @@ contract MultipleWinners {
 
     constructor() public {
         owner = msg.sender;
+        state = LotteryState.Accepting;
     }
 
     // Function that allows you to participate in the lottery
@@ -29,6 +36,7 @@ contract MultipleWinners {
         require(_number >= 1 && _number <= 100, "You have to type a number between 1 and 100");
         // pay 0.1 Ether to participate
         require(msg.value == 0.1 ether, "You have to send 0.1 ETH");
+        require(state == LotteryState.Accepting, "Lottery is finished");
         // put lottery participants into an array
         participants.push(msg.sender);
     }
@@ -45,6 +53,7 @@ contract MultipleWinners {
 
 
     function drawWinners() public  {
+        state == LotteryState.Finished;
         require(participants.length > 0, "No participants in the Lottery");
         
         participants[generateNumber(participants.length)].transfer(address(this).balance);
