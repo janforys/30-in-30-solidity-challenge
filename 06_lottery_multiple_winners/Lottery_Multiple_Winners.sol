@@ -12,14 +12,15 @@ contract MultipleWinners {
     address[] participants;   // no participants limit
     address owner;
     uint Nonce;
+    uint reward;
 
     enum LotteryState { Accepting, Finished }
     LotteryState state;
 
-    mapping (address => bool) gotReward;
+    //mapping (address => bool) gotReward;
     mapping (uint => address[]) choices;
 
-    // Function modifier that allows only contract's owner to call certain functions
+    /// Function modifier that allows only contract's owner to call certain functions
     modifier onlyOwner() {
         require(msg.sender == owner, "Only owner can do this.");
         _;
@@ -30,7 +31,7 @@ contract MultipleWinners {
         state = LotteryState.Accepting;
     }
 
-    // Function that allows you to participate in the lottery
+    /// Function that allows you to participate in the lottery
     function join(uint _number) public payable {
         // give number between 1-100 to participate
         require(_number >= 1 && _number <= 100, "You have to type a number between 1 and 100");
@@ -41,7 +42,7 @@ contract MultipleWinners {
         participants.push(msg.sender);
     }
 
-    // Contract's owner starts number generation from 1 to 100
+    /// Contract's owner starts number generation from 1 to 100
     function generateNumber() public onlyOwner returns (uint) {
         uint min = 1;
         uint max = 100;
@@ -51,13 +52,14 @@ contract MultipleWinners {
         return randomNumber;
     }
 
-
     function drawWinners() public  {
         state == LotteryState.Finished;
+        // check if we have participants in our lottery array
         require(participants.length > 0, "No participants in the Lottery");
         
-        participants[generateNumber(participants.length)].transfer(address(this).balance);
-        delete participants;    // if the lottery ends, next begins
+        participants[randomNumber(participants.length)].transfer(address(this).balance);
+        // if the lottery ends, next begins
+        delete participants;    
     }
     // 50% of the funds are distributed among the winners
     
