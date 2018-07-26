@@ -64,7 +64,7 @@ contract TicTacToeGame {
 
     function drawPlate() public view returns (string) {
           
-        bytes memory outer = new bytes(11);
+        bytes memory outer = new bytes(12);
         byte[] memory signs = new byte[](3);
 
         // fills an array with signs
