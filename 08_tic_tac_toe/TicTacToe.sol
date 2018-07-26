@@ -6,9 +6,9 @@ pragma solidity ^0.4.24;
 * @notice This smart contract presents tic tac toe game.
 */
 
-contract TicTacToe {
+contract TicTacToeGame {
 
-    uint[] plate = new uint[](9);
+    uint[] plate = new uint[](9);   // "plate" is something like a board
     address player1;
     address player2;
     uint start = 0;
@@ -23,13 +23,16 @@ contract TicTacToe {
         player2 = msg.sender;
     }
 
-    function move(uint _place) public returns (string) {
-        uint winner = checkWinner();
+    function checkStatus(uint _place) public returns (string) {
+        
+        // checks if we have a winner
+        string memory message = "No Winner";
+        uint winner = checkWinners();
         if (winner == 1) {
-            return "THE WINNER IS X";
+            message = "X Wins!";
         }
         if (winner == 2) {
-            return "THE WINNER IS Y";
+            message = "O Wins!";
         }
 
         // check users
@@ -41,20 +44,43 @@ contract TicTacToe {
         }
 
         // is on plate
-        if (_place < 0 || _place >= 8) return "Not on the plate";
+        if (_place < 0 || _place > 8) return "Not on the plate";
 
-        // is not set
-        if (plate[_place] != 0) return "Already occupied";
+        // is not already set
+        if (plate[_place] >= 0 && plate[_place] <= 8) return "Already on plate";
         plate[_place] = start + 1;
         start = 1 - start;
-        return "OK";
+
+        return (message);
     }
 
-    function checkWinner() public view returns (uint) {
-        for ( uint i = 0; i < 8; i++) {
+    function checkWinners() public view returns (uint) {
+        for (uint i = 0; i < 8; i++) {
             uint[] memory p = test[i];
             if (plate[p[0]] != 0 && plate[p[0]] == plate[p[1]] && plate[p[0]] == plate[p[2]]) return plate[p[0]];
         }
         return 0;
     }
+
+    function drawPlate() public view returns (string) {
+          
+        bytes memory outer = new bytes(11);
+        byte[] memory signs = new byte[](3);
+
+        // fills an array with signs
+        signs[0] = "-";
+        signs[1] = "X";
+        signs[2] = "O";
+
+        // fills an array with external signs
+        bytes(outer)[3] = "|";
+        bytes(outer)[7] = "|";
+        
+        for (uint i = 0; i < 9; i++) {
+            bytes(outer)[i + i/3] = signs[plate[i]];
+        }
+             
+        return (string(outer));
+    }
+
 }
