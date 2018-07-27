@@ -13,7 +13,7 @@ contract Foundation {
     uint public endTime;
     uint public total = 0;
     
-    mapping(address=>uint) donations;
+    mapping(address => uint) donations;
     
     constructor(uint _goal, uint _timeLimit) public {
         owner = msg.sender;
