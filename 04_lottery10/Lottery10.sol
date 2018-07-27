@@ -12,16 +12,22 @@ contract Lottery10 {
     uint8 participantsCount = 0;
     uint Nonce = 0;
 
-    // Function that let you join the Lottery10    
+    /// Function that let you join the Lottery10    
     function join() public payable {
-        require(msg.value == 0.1 ether, "Must send 0.1 ether");   // minimum 0.1 ether to contribute
-        require(participantsCount < 10, "User limit reached");    // 10 participants limit
-        require(_joinedAlready(msg.sender) == false, "User already joined");    // one chance to join the lottery
-        participants[participantsCount] = msg.sender;   // owner of the contract can participate
+
+        // minimum 0.1 ether to contribute
+        require(msg.value == 0.1 ether, "Must send 0.1 ether");   
+        // 10 participants limit
+        require(participantsCount < 10, "User limit reached");    
+        // one chance to join the lottery
+        require(_joinedAlready(msg.sender) == false, "User already joined"); 
+        // owner of the contract can participate   
+        participants[participantsCount] = msg.sender;   
         participantsCount++;
         if (participantsCount == 10) {
             _selectWinner();
         }
+
     }
     
     function _joinedAlready(address _participant) private view returns (bool) {
@@ -33,14 +39,17 @@ contract Lottery10 {
         }
     }
        
-    // Pick a "random" winner when we have 10 participants
+    /// Pick a "random" winner when we have 10 participants
     function _selectWinner() private returns (address) {
+
         require(participantsCount == 10, "Waiting for more users");
         address winner = participants[_randomNumber()];
-        winner.transfer(address(this).balance);    // winner gets all money
+        // winner gets all money
+        winner.transfer(address(this).balance);    
         delete participants;
         participantsCount = 0;
         return winner;
+
     }
     
     function _randomNumber() private returns (uint) {
@@ -48,4 +57,5 @@ contract Lottery10 {
         Nonce++;
         return rand;
     }
+    
 }
