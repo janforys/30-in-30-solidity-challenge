@@ -5,7 +5,7 @@ import "./StandardToken.sol";
 /**
 * @title Janusz Token
 * @author Jan Foryś
-* @notice This contract shows us usage of ERC20 Standard for our own Token.
+* @notice This contract shows us usage of ERC20 (fungible) Standard for our own Token.
 */
 
 contract JanuszToken is StandardToken {
